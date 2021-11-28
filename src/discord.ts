@@ -1,5 +1,5 @@
 import { Client } from "@typeit/discord";
-import { Role, Guild } from "discord.js";
+import { Role, Guild, TextChannel } from "discord.js";
 import { Config } from "./config";
 
 //Channel type isn't done properly in "@typeit/discord"(?) Doesn't include send method
@@ -24,7 +24,7 @@ class DiscordBot {
     this.channel = channel;
     this.ready = false;
 
-    this.verifiedRole = "Verified";
+    this.verifiedRole = "Obol Community";
     this.config = new Config(process.env);
 
     this.start(profilePic, name, color);
@@ -42,9 +42,10 @@ class DiscordBot {
 
     this.client.on("ready", () => {
       this.ready = true;
-      this.setProfilePicture(profilePic);
-      this.setName(name);
-      this.createRoles(name, color);
+      this.cacheIntroMessage();
+      //this.setProfilePicture(profilePic);
+      //this.setName(name);
+      //this.createRoles(name, color);
     });
 
     this.client.on("messageReactionAdd", (reaction, user) => {
@@ -52,24 +53,22 @@ class DiscordBot {
         emoji = reaction.emoji;
 
       let verifiedRoles: { [id: string]: Role } = this.getRoles(
-        this.verifiedRole,
+        "Obol Community",
         this.config.getVerifiedColor()
       );
 
-      console.log(message);
-      if (message.channel.id === this.config.getIntroChannel()) {
-        if (emoji.name == "👍") {
-          console.log("here");
+      if (message.id === this.config.getIntroMessage()) {
+        console.log()
+        if (emoji.name.includes("obol")) {
+          verifiedRoles[message.guild.id];
+          
           message.guild
             .member(user.id)
             .roles.add(verifiedRoles[message.guild.id]);
-        } else if (emoji.name == "👎") {
-          message.guild
-            .member(user.id)
-            .roles.remove(verifiedRoles[message.guild.id]);
         }
       }
     });
+
     this.client.login(this.token);
   }
 
@@ -119,7 +118,7 @@ class DiscordBot {
   private getRoles(role: string, color: string): { [id: string]: Role } {
     let guildRoles: { [id: string]: Role } = {};
     this.client.guilds.cache.map(async (guild) => {
-      let guildRole = guild.roles.cache.find((r) => r.name === role);
+      let guildRole = guild.roles.cache.find((r) => r.name == role);
       if (!guildRole) {
         guildRole = await guild.roles.create({
           data: {
@@ -146,6 +145,12 @@ class DiscordBot {
     if (!!url && this.ready) {
       this.client.user.setAvatar(url).catch((error) => console.error(error));
     }
+  }
+
+  private cacheIntroMessage() {
+    let c = this.client.channels.cache
+      .get(this.config.getIntroChannel()) as TextChannel;
+    c.messages.fetch();
   }
 }
 

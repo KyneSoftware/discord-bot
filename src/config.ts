@@ -30,6 +30,10 @@ class Config {
   getVerifiedColor() {
     return this.getValue("VERIFIED_ROLE_COLOR");
   }
+
+  getIntroMessage(){
+    return this.getValue("INTRO_MESSAGE")
+  }
 }
 
 export { Config };
