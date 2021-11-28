@@ -19,8 +19,20 @@ class Config {
     return this.getValue("DISCORD_TOKEN");
   }
 
-  getDiscordChannel() {
-    return this.getValue("DISCORD_CHANNEL");
+  getReportingChannel() {
+    return this.getValue("REPORTING_CHANNEL");
+  }
+
+  getIntroChannel(){
+    return this.getValue("INTRO_CHANNEL");
+  }
+
+  getVerifiedColor() {
+    return this.getValue("VERIFIED_ROLE_COLOR");
+  }
+
+  getIntroMessage(){
+    return this.getValue("INTRO_MESSAGE")
   }
 }
 
