@@ -10,6 +10,8 @@ RUN npm install
 RUN npm ci --production && npm cache clean --force
 RUN npm prune --production
 
+RUN npm run build
+
 COPY . .
 
 USER node
