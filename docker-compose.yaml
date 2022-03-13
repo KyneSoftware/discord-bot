@@ -8,10 +8,9 @@ services:
     ports:
       - 3000:3000
     restart: always
-    command: npm run start
     env_file: 
       - .env
     # Map in source and node modules to trigger application restart when it's in watch mode 
-    volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules
+    #volumes:
+      #- .:/usr/src/app
+      #- /usr/src/app/node_modules
