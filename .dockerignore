@@ -8,7 +8,6 @@
 **/.env
 **/.editorconfig
 **/.aws
-**/dist
 **/data
 **/terraform
 **/test
